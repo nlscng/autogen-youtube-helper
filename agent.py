@@ -5,6 +5,7 @@ import asyncio
 
 
 async def get_video_transcript(url: str) -> str:
+    """Given a url of type str, return the title, description, and transcript of the video in a str"""
     yt = YouTube(url)
     description: str = yt.description
     title: str = yt.title
