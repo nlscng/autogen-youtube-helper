@@ -3,6 +3,8 @@ from youtube_transcript_api import YouTubeTranscriptApi, FetchedTranscript
 from typing import List
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_agentchat.messages import TextMessage
+from autogen_core import CancellationToken
 import asyncio
 import os
 
@@ -50,6 +52,11 @@ async def query(url, query):
         ]
         model = model
     )
+    
+    task = f"This is the url of the youtube video: {url}. {query}"
+    async for msg in agent.on_messages_stream([TextMessage(source='user', content=task)], 
+                                              cancellation_token=CancellationToken()):
+        print(f"Agent: {msg.content}")
 
 if __name__ == "__main__":
     url = 'https://www.youtube.com/watch?v=9_PepvnqIfU&t=461s'
