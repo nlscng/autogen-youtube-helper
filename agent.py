@@ -68,6 +68,6 @@ async def query_with_url(url, query):
 
 if __name__ == "__main__":
     url = 'https://www.youtube.com/watch?v=9_PepvnqIfU&t=461s'
-    query = "Summarize the video in no more than five sentences."
+    # query = "Summarize the video in no more than five sentences."
+    query = "Does he mention anything about reinforcement learning in the video? If so, when?"
     result = asyncio.run(query_with_url(url, query))
-    print(result)
