@@ -48,7 +48,9 @@ async def query_with_url(url, query):
         will ask you questions about the video. You can the tool to answer the user's questions. If 
         the answer to the question is not in the video, you should say "I don't know the answer."
          if the question needs to consider time properties, you should use the tool  
-        'get_video_transcript_with_timestamp' tool, otherwise, you should use 'get_video_transcript' tool.""",
+        'get_video_transcript_with_timestamp' tool, otherwise, you should use 'get_video_transcript' tool. 
+        When you are reporting time or time stamps in the video, you should use the format like 
+        '1:23' or '1:23:45' to represent the time point in the video.""",
         reflect_on_tool_use=True,
         tools = [
              get_video_transcript,
@@ -60,8 +62,9 @@ async def query_with_url(url, query):
     task = f"This is the url of the youtube video: {url}. {query}"
     async for msg in agent.on_messages_stream([TextMessage(source='user', content=task)], 
                                               cancellation_token=CancellationToken()):
+        print('--' * 20)
         if isinstance(msg, Response):
-            print(f"Agent: response: {msg.chat_message.to_text()}")
+            print(f"Agent: response: {msg.chat_message.content}")
         else:
             # print(f"Agent: type: {type(msg)} ")
             print(f"Agent: message: {msg.to_text()}")
@@ -69,5 +72,5 @@ async def query_with_url(url, query):
 if __name__ == "__main__":
     url = 'https://www.youtube.com/watch?v=9_PepvnqIfU&t=461s'
     # query = "Summarize the video in no more than five sentences."
-    query = "Does he mention anything about reinforcement learning in the video? If so, when?"
+    query = "tell me all the time stamps when he mention the name Andy."
     result = asyncio.run(query_with_url(url, query))
